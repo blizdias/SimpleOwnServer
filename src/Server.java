@@ -73,9 +73,6 @@ public class Server {
 
     public String validQuery (String str) {
         String [] arrayStr = str.split("\\.");
-        if (arrayStr.length != 2) {
-            return "null";
-        }
 
         switch (arrayStr[arrayStr.length-1]) {
             case "html" :
