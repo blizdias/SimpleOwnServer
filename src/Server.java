@@ -10,25 +10,37 @@ public class Server {
 
     private static final Logger logger = Logger.getLogger(Server.class.getName());
 
-    public void activateSocket(int portNumber) throws IOException {
+
+
+    public void activateSocket(int portNumber) {
+
+        try {
         ServerSocket serverSocket = new ServerSocket(portNumber);
         logger.log(Level.INFO, "server online!");
-        while(true){
+        while(true) {
             Socket client = serverSocket.accept();
             handleClient(client);
+        }
+
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "could not bind to port " + portNumber);
+            logger.log(Level.SEVERE, e.getMessage());
+            System.exit(1);
         }
     }
 
 
-    public void handleClient(Socket client) throws IOException {
+    public void handleClient(Socket client) {
+
+        try {
 
         BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        DataOutputStream clientOutput = new DataOutputStream(client.getOutputStream());
+
 
         String line = in.readLine();
         String[] lineArray = line.split(" ");
 
-
-        DataOutputStream clientOutput = new DataOutputStream(client.getOutputStream());
 
         File html = new File("www" + lineArray[1]);
 
@@ -54,6 +66,10 @@ public class Server {
 
         closeStreams(in, clientOutput, client);
 
+        } catch (IOException e) {
+            logger.log(Level.INFO, e.getMessage());
+        }
+
     }
 
 
@@ -65,7 +81,7 @@ public class Server {
                 clientOutput.flush();
             }
         } catch (IOException e) {
-                e.printStackTrace();
+            logger.log(Level.INFO, e.getMessage());
             }
 
 
@@ -94,7 +110,7 @@ public class Server {
             clientSocket.close();
             out.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.INFO, e.getMessage());
         }
 
     }

@@ -1,6 +1,4 @@
-import org.omg.CORBA.WCharSeqHelper;
 
-import java.io.IOException;
 
 public class Main {
 
@@ -15,7 +13,7 @@ public class Main {
             Server server = new Server();
             server.activateSocket(portnumber);
 
-        } catch (NumberFormatException | IOException e) {
+        } catch (NumberFormatException e) {
             System.err.println("Usage: Server [portnumber]");
             System.exit(1);
         }
